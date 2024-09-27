@@ -18,11 +18,35 @@ STEPS OF IMPLEMENTATION
 
 3. Then write unit tests for each
 
-4.
+4. Specify the directory to generate .adoc files inside test classes.
+   we use @AutoConfigureRestDocs(outputDir = "target/generated-snippets") for that
 
+5. At the end of the unit test use .andDo() method and provide details as follows
 
-run
-maven clean package
+    @Test
+    public void testGetOrders() throws Exception {
+        mockMvc.perform(get("/products/all")
+            .contentType("application/json")).andDo(print())
+            .andExpect(status().isOk())
+            .andDo(document("{methodName}",
+                preprocessRequest(prettyPrint()),
+                preprocessResponse(prettyPrint())));
+    }
+6. Then run the test cases. After that you will see .adoc files will be generated in "target/generated-snippets" location.
+Those files include curl, http request, response, request-body, response-body.
+
+7. But it will generate those files for each test case. that is a distract for the user.
+Instead, we can generate a html file containing all the documentations. For that create a file called index.adoc and add it in a package
+src/java/main/asciidoc
+
+The content of it is in that particular file
+
+After that run
+"mvn clean package"
+
+Then you will see a html file has generated in "target/generated-doc/index.adoc" location. open it in browser. That is
+the spring-rest-doc we are talking in this demo(see img-1.png in README dir).
+This is a static content and that's the disadvantage of this over swagger
 
 PROS OF SPRING REST DOCS
 ========================
