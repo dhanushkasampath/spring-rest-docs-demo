@@ -54,6 +54,7 @@
 
 	<build>
 		<plugins>
+<!--			Since I created this project using spring initializer, it has got this plugin added, which is needed for html file generation-->
 			<plugin>
 				<groupId>org.asciidoctor</groupId>
 				<artifactId>asciidoctor-maven-plugin</artifactId>
